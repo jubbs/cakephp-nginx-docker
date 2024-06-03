@@ -11,10 +11,10 @@ services:
     links:
       - php
     labels:
-      - traefik.http.routers.example.rule=Host(`example.docker.system.net.nz`)
-      - traefik.http.routers.example.entrypoints=https
-      - traefik.http.routers.example.tls=true
-      - traefik.http.routers.example.tls.certresolver=letsencrypt
+      - traefik.http.routers.example2.rule=Host(`example2.docker.system.net.nz`)
+      - traefik.http.routers.example2.entrypoints=https
+      - traefik.http.routers.example2.tls=true
+      - traefik.http.routers.example2.tls.certresolver=letsencrypt
 
   php:
     build:
