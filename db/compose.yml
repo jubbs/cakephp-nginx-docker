@@ -1,31 +1,34 @@
 services:
   db:
     image: mysql:8
-    container_name: db
     environment:
       MYSQL_ROOT_PASSWORD: BigHairyDog
       MYSQL_USER: hhaadmin
       MYSQL_PASSWORD: BigHairyDog
-    ports:
-      - "6033:3306"
     volumes:
       - dbdata:/var/lib/mysql
-  phpmyadmin:
+  pma:
     image: phpmyadmin/phpmyadmin
-    container_name: pma
-    links:
-      - db
+    networks:
+      - web
+      - default
     labels:
-      - traefik.http.routers.https.rule=Host(`phpmyadmin.docker.system.net.nz`)
-      - traefik.http.routers.https.entrypoints=https
-      - traefik.http.routers.https.tls=true
-      - traefik.http.routers.https.tls.certresolver=letsencrypt
+      - traefik.http.routers.pma.rule=Host(`pma.docker.system.net.nz`)
+      - traefik.http.routers.pma.entrypoints=https
+      - traefik.http.routers.pma.tls=true
+      - traefik.http.routers.pma.tls.certresolver=letsencrypt
     environment:
       PMA_HOST: db
       PMA_PORT: 3306
-      PMA_ARBITRARY: 1
+      PMA_ARBITRARY: 0
     restart: always
-    ports:
-      - 8081:80
+    volumes:
+      - /sessions
+      - ~/docker/phpmyadmin/config.user.inc.php:/etc/phpmyadmin/config.user.inc.php
+      - /custom/phpmyadmin/theme/:/www/themes/theme/
 volumes:
   dbdata:
+networks:
+  web:
+    external: true
+  default:
