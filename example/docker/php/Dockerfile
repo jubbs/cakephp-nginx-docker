@@ -30,12 +30,14 @@ RUN set -eux; \
     libwebp-dev \
     libxpm-dev \
     libmcrypt-dev \
+    libzip-dev \
+    libicu-dev \
     libonig-dev; \
     rm -rf /var/lib/apt/lists/*
 
 RUN set -eux; \
     # Install the PHP pdo_mysql extention
-    docker-php-ext-install pdo_mysql; \
+    docker-php-ext-install pdo_mysql zip intl; \
     docker-php-ext-configure gd \
     --prefix=/usr \
     --with-jpeg \
